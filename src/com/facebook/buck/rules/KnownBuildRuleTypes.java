@@ -112,6 +112,8 @@ import com.facebook.buck.python.PythonTestDescription;
 import com.facebook.buck.rust.RustBinaryDescription;
 import com.facebook.buck.rust.RustBuckConfig;
 import com.facebook.buck.rust.RustLibraryDescription;
+import com.facebook.buck.scala.ScalaBuckConfig;
+import com.facebook.buck.scala.ScalaLibraryDescription;
 import com.facebook.buck.shell.ExportFileDescription;
 import com.facebook.buck.shell.GenruleDescription;
 import com.facebook.buck.shell.ShBinaryDescription;
@@ -376,6 +378,8 @@ public class KnownBuildRuleTypes {
 
     RustBuckConfig rustBuckConfig = new RustBuckConfig(config);
 
+    ScalaBuckConfig scalaBuckConfig = new ScalaBuckConfig(config);
+
     GoBuckConfig goBuckConfig = new GoBuckConfig(config, processExecutor);
 
     ProGuardConfig proGuardConfig = new ProGuardConfig(config);
@@ -536,6 +540,7 @@ public class KnownBuildRuleTypes {
             testTempDirOverride));
     builder.register(new RustBinaryDescription(rustBuckConfig));
     builder.register(new RustLibraryDescription(rustBuckConfig));
+    builder.register(new ScalaLibraryDescription(scalaBuckConfig));
     builder.register(new ShBinaryDescription());
     builder.register(new ShTestDescription());
     ThriftBuckConfig thriftBuckConfig = new ThriftBuckConfig(config);
