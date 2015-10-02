@@ -43,6 +43,7 @@ java_library(
     '//src/com/facebook/buck/cxx:rules',
     '//src/com/facebook/buck/rules/macros:macros',
     '//src/com/facebook/buck/rust:rust',
+    '//src/com/facebook/buck/scala:scala',
     '//src/com/facebook/buck/shell:rules',
     '//src/com/facebook/buck/timing:timing',
     '//src/com/facebook/buck/thrift:rules',
