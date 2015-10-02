@@ -61,7 +61,7 @@ public class ScalaLibraryDescription implements Description<ScalaLibraryDescript
       A args) {
     Path output =
       BuildTargets.getGenPath(
-          params.getBuildTarget(), "%s/lib" + params.getBuildTarget().getShortName() + ".rlib");
+          params.getBuildTarget(), "%s/" + params.getBuildTarget().getShortName());
     return new ScalaLibrary(
         params,
         new SourcePathResolver(resolver),

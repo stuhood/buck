@@ -18,7 +18,6 @@ package com.facebook.buck.scala;
 
 import com.facebook.buck.java.Classpaths;
 import com.facebook.buck.java.JavaLibrary;
-import com.facebook.buck.model.BuildTargets;
 import com.facebook.buck.rules.AbstractBuildRule;
 import com.facebook.buck.rules.AddToRuleKey;
 import com.facebook.buck.rules.BuildContext;
@@ -29,7 +28,6 @@ import com.facebook.buck.rules.BuildableProperties;
 import com.facebook.buck.rules.SourcePath;
 import com.facebook.buck.rules.SourcePathResolver;
 import com.facebook.buck.rules.Tool;
-import com.facebook.buck.shell.SymlinkFilesIntoDirectoryStep;
 import com.facebook.buck.step.Step;
 import com.facebook.buck.step.fs.MakeCleanDirectoryStep;
 import com.facebook.buck.util.HumanReadableException;
@@ -46,7 +44,6 @@ public class ScalaLibrary extends AbstractBuildRule {
   private final Tool compiler;
   @AddToRuleKey
   private final ImmutableSet<SourcePath> srcs;
-  private final Path scratchDir;
   private final Path output;
 
   ScalaLibrary(
@@ -59,7 +56,6 @@ public class ScalaLibrary extends AbstractBuildRule {
     this.srcs = srcs;
     this.output = output;
     this.compiler = compiler;
-    this.scratchDir = BuildTargets.getScratchPath(getBuildTarget(), "container");
   }
 
   /**
@@ -74,7 +70,6 @@ public class ScalaLibrary extends AbstractBuildRule {
       if (buildRule instanceof ScalaLibrary) {
         classpath.add(Preconditions.checkNotNull(buildRule.getPathToOutput()));
       } else if (buildRule instanceof JavaLibrary) {
-        JavaLibrary jl = (JavaLibrary) buildRule;
         classpath.addAll(Classpaths.getClasspathEntries(ImmutableSet.of(buildRule)).values());
       } else {
         throw new HumanReadableException(
@@ -91,12 +86,6 @@ public class ScalaLibrary extends AbstractBuildRule {
       BuildContext context,
       BuildableContext buildableContext) {
     return ImmutableList.of(
-        new MakeCleanDirectoryStep(getProjectFilesystem(), scratchDir),
-        new SymlinkFilesIntoDirectoryStep(
-            getProjectFilesystem(),
-            getProjectFilesystem().getRootPath(),
-            getResolver().getAllPaths(srcs),
-            scratchDir),
         new MakeCleanDirectoryStep(getProjectFilesystem(), output.getParent()),
         new ScalaCompileStep(
             getProjectFilesystem().getRootPath(),
